@@ -1,0 +1,21 @@
+- name: Add user roman
+  user:
+    name: roman
+    uid: 1223
+    group: admin
+
+- name: Add user juri
+  user:
+    name: juri
+    uid: 2234
+    group: admin
+
+- name: Ssh key for roman
+  authorized_key:
+    user: roman
+    key: https://github.com/romankuchin.keys
+
+- name: Ssh key for juri
+  authorized_key:
+    user: juri
+    key: https://github.com/hudolejev.keys

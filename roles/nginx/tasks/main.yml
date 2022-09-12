@@ -1,0 +1,17 @@
+- name: Ensure Nginx is installed
+  apt:
+    name: nginx
+    state: latest
+    update_cache: true
+
+- name: start nginx
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+  become: yes
+
+- name: Copy html to server
+  ansible.builtin.copy:
+    src: index.html
+    dest: /var/www/html/index.html

@@ -13,5 +13,6 @@
 
 - name: Copy html to server
   ansible.builtin.copy:
-    src: index.html
-    dest: /var/www/html/index.html
+    src: ../files/default
+    dest: /etc/nginx/sites-enabled/default
+  notify: Restart nginx

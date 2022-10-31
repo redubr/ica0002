@@ -3,7 +3,6 @@
     hosts: web_servers
     become: yes
     roles:
-      - test_connection
       - agama
       - uwsgi
       - nginx

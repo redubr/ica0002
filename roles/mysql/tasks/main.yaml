@@ -1,0 +1,34 @@
+- name: Ensure mysql server is installed
+  apt:
+    name: mysql-server
+    state: latest
+
+- name: MySql started and enabled
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+
+- name: Configure
+  ansible.builtin.copy:
+    src: ../files/override.cnf
+    dest: /etc/mysql/mysql.conf.d/override.cnf
+  notify: Restart mysql
+
+- name: Ensure pymysql is installed
+  apt:
+    name: python3-pymysql
+    state: latest
+
+- name: Add MySQL Database
+  community.mysql.mysql_db:
+    name: "{{mysql_database}}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Add MySQL user
+  community.mysql.mysql_user:
+    name: "{{mysql_user}}"
+    password: "{{mysql_password}}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    priv: "{{ mysql_database }}.*:ALL"
+    host: "%"

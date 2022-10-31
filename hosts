@@ -1,7 +1,12 @@
 server1 ansible_host=193.40.156.67 ansible_port=17322 ansible_user=ubuntu
+server2
 
 [ubuntu]
 server1
+server2
 
 [web_servers]
 server1
+
+[db_servers]
+server2

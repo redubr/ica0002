@@ -10,3 +10,6 @@ server1
 
 [db_servers]
 server2
+
+[dns_servers]
+server2

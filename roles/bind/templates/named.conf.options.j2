@@ -1,0 +1,14 @@
+acl networks {
+    {{lan}};
+    {{localhost}};
+};
+
+options {
+    forwarders {
+    {% for fow in dns_forwarders %}
+        {{fow}};
+    {% endfor %}
+    };
+
+    allow-query { networks; };
+};

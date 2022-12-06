@@ -1,6 +1,7 @@
-mysql_host: 192.168.42.42
+mysql_host: 192.168.42.158
 mysql_database: agama
 mysql_user: agama
+mysql_user_prometheus: exporter
 mysql_password: !vault |
   $ANSIBLE_VAULT;1.1;AES256
   36646261303031346336306663643330343536356533376565336535303161363733666331633535
@@ -10,15 +11,17 @@ mysql_password: !vault |
   6638
 
 
+
 dns_forwarders:
   - 1.1.1.1
   - 8.8.8.8
-  - 9.9.9.9
-  - 9.9.9.10
 
 lan: 192.168.42.0/23
 localhost: 127.0.0.0/8
-domain_name: in.rd
-startup_name: in
+domain_name: infra.rd
+startup_name: infra
+dns_search_domain: infra.rd
+dns_listen: 192.168.42.158
+## s2
+monitoring_host: 193.40.156.67:15880
 
-monitoring_host: 193.40.156.67:4280

@@ -6,12 +6,15 @@
     roles:
       - init
       - node_exporter
+    tags: init
 
   - name: Database server
     hosts: db_servers
     become: yes
     roles:
-      - mysql
+      #- mysql
+      - mysql_exporter
+    tags: mysql
 
   - name: Web server
     hosts: web_servers
@@ -20,12 +23,15 @@
       - agama
       - uwsgi
       - nginx
+      - nginx_exporter
 
   - name: DNS Server
     hosts: dns_servers
     become: yes
     roles:
         - bind
+        - bind_exporter
+    tags: dns
 
   - name: Prometheus
     hosts: prometh
@@ -34,3 +40,16 @@
         - prometheus
         - nginx
     tags: p
+
+  - name: Grafana
+    hosts: grafana
+    become: yes
+    roles:
+        - grafana
+    tags: g
+
+  - name: DNS Nameserver conf
+    hosts: all
+    become: yes
+    roles:
+        - dns_resolve

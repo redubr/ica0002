@@ -13,10 +13,16 @@
   template:
     src: ../templates/named.conf.options.j2
     dest: /etc/bind/named.conf.options
-  notify: Restart bind9
+  notify: restart bind9
 
 - name: Copy master zone config
   template:
     src: ../templates/db.dok.j2
-    dest: /var/lib/bind/db.dok
-  notify: Restart bind9
+    dest: /var/lib/bind/db.infra.rd
+  notify: restart bind9
+
+- name: C
+  template:
+    src: named.conf.local.j2
+    dest: /etc/bind/named.conf.local
+  notify: restart bind9

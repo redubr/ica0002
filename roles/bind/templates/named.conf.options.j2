@@ -4,11 +4,19 @@ acl networks {
 };
 
 options {
-    forwarders {
-    {% for fow in dns_forwarders %}
-        {{fow}};
-    {% endfor %}
-    };
+    directory "/var/cache/bind";
 
     allow-query { networks; };
+    dnssec-validation no;
+    recursion yes;
+    allow-recursion { networks; };
+
+    forwarders {
+        {% for fow in dns_forwarders %}
+        {{fow}};
+        {% endfor %}
+    };
+
+    listen-on port 53 { 127.0.0.1; {{dns_listen}}; };
+
 };

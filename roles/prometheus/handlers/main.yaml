@@ -1,0 +1,11 @@
+- name: restart
+  service:
+    name: prometheus
+    state: restarted
+    enabled: yes
+
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted
+    enabled: yes

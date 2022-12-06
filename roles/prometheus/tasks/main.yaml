@@ -1,0 +1,25 @@
+---
+- name: Prometheus installed
+  apt:
+    name: prometheus
+    state: latest
+
+- name: CP ARGS
+  template:
+    src: prometheus.j2
+    dest: /etc/default/prometheus
+  notify: restart
+
+- name: Copy conf
+  template:
+    src: prometheus.yml.j2
+    dest: /etc/prometheus/prometheus.yml
+  notify: restart
+
+- name: Start prometheus
+  service:
+    name: prometheus
+    state: started
+    enabled: yes
+    arguments:
+  become: yes

@@ -1,0 +1,10 @@
+- name: Install InfluxDB stats exporter
+  apt:
+    name: influxdb-stats-exporter
+    state: latest
+
+- name: ensure influxdb stats exporter is enabled
+  service:
+    name: influxdb-stats-exporter
+    state: started
+    enabled: yes

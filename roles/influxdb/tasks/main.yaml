@@ -1,0 +1,34 @@
+---
+- name: ensure influxdb and -client are installed
+  apt:
+    name:
+      - influxdb
+      - influxdb-client
+    state: latest
+
+- name: download telegraf v1.24.2
+  get_url:
+    url: https://dl.influxdata.com/telegraf/releases/telegraf_1.24.2-1_amd64.deb
+    dest: /opt/telegraf_1.24.2-1_amd64.deb
+
+- name: install telegraf
+  apt:
+    deb: /opt/telegraf_1.24.2-1_amd64.deb
+
+- name: configure telegraf
+  template:
+    src: telegraf.conf.j2
+    dest: /etc/telegraf/telegraf.conf
+  notify: restarted telegraf
+
+- name: influxdb started, enabled
+  service:
+    name: influxdb
+    state: started
+    enabled: yes
+
+- name: telegraf started, enabled
+  service:
+    name: telegraf
+    state: started
+    enabled: yes

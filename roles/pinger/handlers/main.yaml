@@ -1,0 +1,9 @@
+---
+- name: daemon-reload
+  shell: systemctl daemon-reload
+
+- name: restart
+  service:
+    name: pinger
+    state: restarted
+    enabled: yes

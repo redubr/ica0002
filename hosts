@@ -24,6 +24,9 @@ server2
 [grafana]
 server2
 
+[logging]
+server2
+
 [application-stack]
 
 [internal]

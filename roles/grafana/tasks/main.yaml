@@ -14,6 +14,21 @@
   apt:
     deb: /tmp/grafana_9.3.1_amd64.deb
 
+- name: Copy main dashboard
+  ansible.builtin.copy:
+    src: ../files/main.json
+    dest: /etc/grafana/provisioning/dashboards/main.json
+
+- name: Copy syslog dashboard
+  ansible.builtin.copy:
+    src: ../files/syslog.json
+    dest: /etc/grafana/provisioning/dashboards/syslog.json
+
+- name: Dashboard provision template
+  template:
+    src: sample.yaml.j2
+    dest: /etc/grafana/provisioning/dashboards/sample.yaml
+
 - name: Grafana config
   template:
     src: grafana.ini.j2

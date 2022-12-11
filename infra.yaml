@@ -7,6 +7,7 @@
       - init
       - node_exporter
       - users
+      - rsyslog
     tags: init
 
   - name: Database server
@@ -63,3 +64,12 @@
         - mysql_exporter
         # restart prometheus
     tags: mysql_exporter
+
+  - name: Logging
+    hosts: logging
+    become: yes
+    roles:
+        - influxdb
+        - pinger
+        # - influxdb_exporter brks
+    tags: logging

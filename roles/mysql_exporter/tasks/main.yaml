@@ -1,0 +1,18 @@
+---
+- name: mysql exporter installed
+  apt:
+    name: prometheus-mysqld-exporter
+    state: latest
+
+- name: Copy config
+  template:
+    src: my.cnf.j2
+    dest: /var/lib/prometheus/.my.cnf
+  notify: restart
+  no_log: yes
+
+- name: start mysql exporter
+  service:
+    name: prometheus-mysqld-exporter
+    state: started
+    enabled: yes

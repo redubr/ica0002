@@ -1,0 +1,11 @@
+---
+- name: nginx exporter installed
+  apt:
+    name: prometheus-nginx-exporter
+    state: latest
+
+- name: start and enable nginx exporter
+  service:
+    name: prometheus-nginx-exporter
+    state: started
+    enabled: yes

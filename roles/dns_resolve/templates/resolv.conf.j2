@@ -1,0 +1,9 @@
+{% for vm in groups['bind9-server'] %}
+nameserver {{ hostvars[vm]['ansible_default_ipv4']['address'] }}
+{% endfor %}
+
+
+
+{% if dns_search_domain %}
+search {{ dns_search_domain }}
+{% endif %}

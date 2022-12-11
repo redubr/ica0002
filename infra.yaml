@@ -6,24 +6,25 @@
     roles:
       - init
       - node_exporter
+      - users
     tags: init
 
   - name: Database server
     hosts: db_servers
     become: yes
     roles:
-      #- mysql
-      - mysql_exporter
+      - mysql
     tags: mysql
 
   - name: Web server
     hosts: web_servers
     become: yes
     roles:
-      - agama
-      - uwsgi
+      - agama #app-server
+      - uwsgi #app-server
       - nginx
       - nginx_exporter
+    tags: n
 
   - name: DNS Server
     hosts: dns_servers
@@ -38,7 +39,6 @@
     become: yes
     roles:
         - prometheus
-        - nginx
     tags: p
 
   - name: Grafana
@@ -53,3 +53,13 @@
     become: yes
     roles:
         - dns_resolve
+    tags: resolve
+
+
+  - name: MySQL exporter
+    hosts: db_servers
+    become: yes
+    roles:
+        - mysql_exporter
+        # restart prometheus
+    tags: mysql_exporter

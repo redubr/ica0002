@@ -1,0 +1,15 @@
+---
+- name: influxdb backup directory
+  file:
+    path: /home/backup/influxdb
+    state: directory
+    owner: backup
+    group: backup
+    mode: '0774'
+
+- name: influxdb backup cronjob
+  template:
+    src: influxdb_backup.j2
+    dest: /etc/cron.d/influxdb-backup
+    force: yes
+    mode: '0644'

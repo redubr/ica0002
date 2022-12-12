@@ -8,6 +8,7 @@
       - node_exporter
       - users
       - rsyslog
+      - backup
     tags: init
 
   - name: Database server
@@ -15,6 +16,7 @@
     become: yes
     roles:
       - mysql
+      - mysql_backup
     tags: mysql
 
   - name: Web server
@@ -29,6 +31,7 @@
 
   - name: DNS Server
     hosts: dns_servers
+    gather_facts: yes
     become: yes
     roles:
         - bind
@@ -62,7 +65,6 @@
     become: yes
     roles:
         - mysql_exporter
-        # restart prometheus
     tags: mysql_exporter
 
   - name: Logging
@@ -70,6 +72,7 @@
     become: yes
     roles:
         - influxdb
-        - pinger
+        - influxdb_backup
+        - pinger #n/w
         # - influxdb_exporter brks
     tags: logging

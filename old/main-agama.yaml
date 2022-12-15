@@ -1,0 +1,23 @@
+- name: Create user agama
+  user:
+    name: agama
+
+- name: Directory for agama install
+  file:
+    path: /opt/agama
+    state: directory
+    owner: agama
+    group: agama
+    mode: 0755
+
+- name: Install flask-sql
+  apt:
+    name:
+      - python3-flask-sqlalchemy
+      - python3-pymysql
+    state: latest
+
+- name: Get agama
+  get_url:
+    url: https://raw.githubusercontent.com/hudolejev/agama/master/agama.py
+    dest: /opt/agama

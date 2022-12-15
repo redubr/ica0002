@@ -9,6 +9,7 @@
       - users
       - rsyslog
       - backup
+      - docker
     tags: init
 
   - name: Database server
@@ -24,9 +25,8 @@
     become: yes
     roles:
       - agama #app-server
-      - uwsgi #app-server
+    #- uwsgi #app-server
       - nginx
-      - nginx_exporter
     tags: n
 
   - name: DNS Server
@@ -74,5 +74,6 @@
         - influxdb
         - influxdb_backup
         - pinger #n/w
-        # - influxdb_exporter brks
+        - nginx_exporter
+        - influxdb_exporter
     tags: logging

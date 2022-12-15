@@ -6,6 +6,11 @@
   notify: restart
   no_log: yes
 
+- name: Copy prometheus conf
+  template:
+    src: prometheus-mysqld-exporter.j2
+    dest: /etc/default/prometheus-mysqld-exporter
+
 - name: mysql exporter installed
   apt:
     name: prometheus-mysqld-exporter

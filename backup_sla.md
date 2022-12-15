@@ -14,3 +14,7 @@ Incremental mon-sat 1am
 
 ## RTO
 
+## Make a backup
+
+sudo runuser -u backup -- mysqldump agama > /home/backup/mysql/agama.sql
+sudo runuser -u backup -- duplicity --no-encryption full /home/backup/mysql/ rsync://redubr@backup.infra.rd/mysql

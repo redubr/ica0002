@@ -1,4 +1,9 @@
-- name: restart
-  service:
-    name: grafana-server
-    state: restarted
+- name: stop
+  docker_container:
+    name: grafana
+    state: stopped
+
+- name: start
+  docker_container:
+    name: grafana
+    state: started

@@ -1,0 +1,13 @@
+---
+- name: ensure docker is installed
+  apt:
+    name:
+      - docker.io
+      - python3-docker
+    state: latest
+
+- name: docker enabled
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: yes

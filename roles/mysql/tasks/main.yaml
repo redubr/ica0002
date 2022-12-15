@@ -3,17 +3,17 @@
     name: mysql-server
     state: latest
 
+- name: Configure
+  template:
+    src: override.cnf.j2
+    dest: /etc/mysql/mysql.conf.d/override.cnf
+  notify: Restart mysql
+
 - name: MySql started and enabled
   service:
     name: mysql
     state: started
     enabled: yes
-
-- name: Configure
-  ansible.builtin.copy:
-    src: ../files/override.cnf
-    dest: /etc/mysql/mysql.conf.d/override.cnf
-  notify: Restart mysql
 
 - name: Ensure pymysql is installed
   apt:
@@ -24,6 +24,9 @@
   community.mysql.mysql_db:
     name: "{{mysql_database}}"
     login_unix_socket: /var/run/mysqld/mysqld.sock
+  notify:
+    - reset source
+    - reset replica
 
 - name: Add MySQL user
   mysql_user:
@@ -32,6 +35,7 @@
     priv: "{{ mysql_database }}.*:ALL"
     login_unix_socket: /var/run/mysqld/mysqld.sock
     host: "%"
+  no_log: true
 
 - name: MySql user for exporter
   mysql_user:
@@ -39,3 +43,35 @@
     password: "{{mysql_exporter_pw}}"
     priv: '*.*:PROCESS,REPLICATION CLIENT,SELECT'
     login_unix_socket: /var/run/mysqld/mysqld.sock
+    host: "%"
+  no_log: true
+
+- name: MySql user for replication
+  mysql_user:
+    name: "{{mysql_user_replication}}"
+    password: "{{mysql_replication_pw}}"
+    priv: '*.*:REPLICATION SLAVE'
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    host: "%"
+  no_log: true
+
+- name: replica server read_only
+  community.mysql.mysql_variables:
+    variable: read_only
+    value: "{{ 'OFF' if inventory_hostname == mysql_host else 'ON' }}"
+    mode: persist
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  notify:
+    - reset source
+    - reset replica
+
+- name: fix annoying bug
+  community.mysql.mysql_variables:
+    variable: read_only
+    value: 'OFF'
+    mode: persist
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  when: inventory_hostname == mysql_hostname
+  notify:
+    - reset source
+    - reset replica

@@ -1,5 +1,5 @@
-server1 ansible_host=193.40.156.67 ansible_port=15522 ansible_user=ubuntu
-server2 ansible_host=193.40.156.67 ansible_port=15222 ansible_user=ubuntu
+server1 ansible_host=193.40.156.67 ansible_port=8822 ansible_user=ubuntu
+server2 ansible_host=193.40.156.67 ansible_port=17522 ansible_user=ubuntu
 
 [ubuntu]
 server1
@@ -13,8 +13,15 @@ server2
 server1
 server2
 
-[dns_servers]
+[dns_slaves]
+server1
+
+[dns_master]
 server2
+
+[dns_servers:children]
+dns_master
+dns_slaves
 
 [bind9-server]
 server2
@@ -25,12 +32,21 @@ server2
 [grafana]
 server2
 
+[influxdb]
+server2
+
 [logging]
 server2
 
 [mysql_host]
 server2
 
+[haproxy]
+server1
+server2
+
 [application-stack]
+server1
+server2
 
 [internal]

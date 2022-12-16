@@ -1,0 +1,34 @@
+---
+- name: Ensure haproxy isnstalled
+  apt:
+    name: haproxy
+    state: latest
+
+- name: Haproxy exporter
+  apt:
+    name: prometheus-haproxy-exporter
+    state: latest
+
+- name: cp conf
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+  notify: restart
+
+- name: cp conf exporter
+  template:
+    src: prometheus-haproxy-exporter.j2
+    dest: /etc/default/prometheus-haproxy-exporter
+  notify: restart
+
+- name: enable haproxy
+  service:
+    name: haproxy
+    state: started
+    enabled: yes
+
+- name: enable haproxy exporter
+  service:
+    name: prometheus-haproxy-exporter
+    state: started
+    enabled: yes

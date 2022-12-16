@@ -1,9 +1,6 @@
-{% for vm in groups['bind9-server'] %}
+search {{domain_name}}
+{% for vm in groups['dns_servers'] %}
 nameserver {{ hostvars[vm]['ansible_default_ipv4']['address'] }}
 {% endfor %}
 
 nameserver 1.1.1.1
-
-{% if dns_search_domain %}
-search {{ dns_search_domain }}
-{% endif %}

@@ -26,6 +26,7 @@ scrape_configs:
 - job_name: bind9
   static_configs:
     - targets:
+       - server1.{{domain_name}}:9119
        - server2.{{domain_name}}:9119
 
 - job_name: nginx
@@ -39,6 +40,12 @@ scrape_configs:
     - targets:
        - server1.{{domain_name}}:9104
        - server2.{{domain_name}}:9104
+
+- job_name: haproxy
+  static_configs:
+    - targets:
+      - server1.{{domain_name}}:9188
+      - server2.{{domain_name}}:9188
 
 - job_name: prometheus
   honor_timestamps: true

@@ -12,6 +12,8 @@
       - docker
     tags: init
 
+
+
   - name: Database server
     hosts: db_servers
     become: yes
@@ -27,12 +29,20 @@
       - agama #app-server
     #- uwsgi #app-server
       - nginx
+      - nginx_exporter
     tags: n
 
   - name: DNS Server
     hosts: dns_servers
     gather_facts: yes
     become: yes
+    pre_tasks:
+        - name: Gather facts from ALL hosts (regardless of limit or tags)
+          setup:
+          delegate_to: "{{ item }}"
+          delegate_facts: True
+          when: hostvars[item]['ansible_default_ipv4'] is not defined
+          with_items: "{{ groups['all'] }}"
     roles:
         - bind
         - bind_exporter
@@ -74,6 +84,13 @@
         - influxdb
         - influxdb_backup
         - pinger #n/w
-        - nginx_exporter
-        - influxdb_exporter
+        # - influxdb_exporter deosnt works
     tags: logging
+
+  - name: Keepalived/HA
+    hosts: haproxy
+    become: yes
+    roles:
+        - keepalived
+        - haproxy
+    tags: ha

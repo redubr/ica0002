@@ -1,6 +1,6 @@
 $TTL	604800
 {% for vm in groups['dns_master'] %}
-{{domain_name}}.	IN	SOA	{{vm}}.{{domain_name}}. redubr.{{domain_name}}. (
+43.168.192.in-addr.arpa.	IN	SOA	{{vm}}.{{domain_name}}. redubr.{{domain_name}}. (
 	              5     ; Serial
 			 604800		; Refresh
 			  86400		; Retry
@@ -8,11 +8,11 @@ $TTL	604800
 			 604800 )	; Negative Cache TTL
 ;
 {% endfor %}
+
 {% for vm in groups['dns_servers'] %}
-{{ domain_name }}.	IN	NS	{{vm}}.{{domain_name}}.
+43.168.192.in-addr.arpa.	IN	NS	{{ vm }}.{{domain_name}}.
 {% endfor %}
 
 {% for vm in hostvars %}
-{{hostvars[vm]['inventory_hostname']}}    IN  A   {{hostvars[vm]['ansible_default_ipv4']['address']}}
+{{ (hostvars[vm]['ansible_default_ipv4']['address']|split('.'))[3] }}  IN  PTR  {{ vm }}.{{ domain_name }}.
 {% endfor %}
-backup    IN A {{backup_server_ip}}

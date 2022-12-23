@@ -19,7 +19,9 @@
   template:
     src: prometheus-haproxy-exporter.j2
     dest: /etc/default/prometheus-haproxy-exporter
-  notify: restart
+  notify:
+    - restart
+    - restart exp
 
 - name: enable haproxy
   service:

@@ -3,3 +3,9 @@
     name: haproxy
     enabled: yes
     state: restarted
+
+- name: restart exp
+  service:
+    name: prometheus-haproxy-exporter
+    enabled: yes
+    state: restarted

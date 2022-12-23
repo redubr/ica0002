@@ -1,5 +1,5 @@
 ##
-mysql_host: 192.168.42.175
+mysql_host: 192.168.42.73 #todo dynamic
 mysql_hostname: server2
 ##
 mysql_database: agama
@@ -66,10 +66,10 @@ lan: 192.168.42.0/23
 localhost: 127.0.0.0/8
 startup_name: infra
 domain_name: "{{startup_name}}.rd"
-dns_listen: 192.168.42.175 # Todo dynamic
+dns_listen: 192.168.42.102 # Todo dynamic
 
 ## serv2
-monitoring_host: 193.40.156.67:17580 #public url # todo where used?
+monitoring_host: 193.40.156.67:10280 #public url serv3 # todo where used?
 
 ## Backup server
 backup_server_ip: 192.168.42.132

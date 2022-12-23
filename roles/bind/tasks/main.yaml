@@ -11,6 +11,7 @@
     dest: /etc/bind/named.conf.options
   notify: restart bind9
   no_log: true
+  register: conf
 
 #cmd to check on slave named-checkzone infra.rd /var/cache/bind/db.infra.rd
 - name: Copy master zone db
@@ -20,6 +21,7 @@
     force: no # only when missing
   notify: reload rndc
   when: inventory_hostname in groups['dns_master']
+  register: conf
 
 - name: Copy reverse zone db
   template:
@@ -28,12 +30,14 @@
     force: no # only when missing
   notify: reload rndc
   when: inventory_hostname in groups['dns_master']
+  register: conf
 
 - name: CP local
   template:
     src: named.conf.local.j2
     dest: /etc/bind/named.conf.local
   notify: restart bind9
+  register: conf
 
 - name: start bind9
   service:
@@ -43,6 +47,11 @@
 
 - name: execute handlers
   meta: flush_handlers
+
+- name: wait
+  pause:
+    seconds: 30
+  when: conf.changed
 
 - name: Add A records
   nsupdate:

@@ -28,12 +28,14 @@ scrape_configs:
     - targets:
        - server1.{{domain_name}}:9119
        - server2.{{domain_name}}:9119
+       - server3.{{domain_name}}:9119
 
 - job_name: nginx
   static_configs:
     - targets:
        - server1.{{domain_name}}:9113
        - server2.{{domain_name}}:9113
+       - server3.{{domain_name}}:9113
 
 - job_name: mysql
   static_configs:
@@ -44,8 +46,19 @@ scrape_configs:
 - job_name: haproxy
   static_configs:
     - targets:
-      - server1.{{domain_name}}:9188
-      - server2.{{domain_name}}:9188
+      - server1.{{domain_name}}:9101
+      - server2.{{domain_name}}:9101
+
+- job_name: keepalived
+  static_configs:
+    - targets:
+      - server1.{{domain_name}}:9165
+      - server2.{{domain_name}}:9165
+
+- job_name: influxdb
+  static_configs:
+    - targets:
+      - server3.{{domain_name}}:9424
 
 - job_name: prometheus
   honor_timestamps: true

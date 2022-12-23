@@ -10,6 +10,8 @@
       - rsyslog
       - backup
       - docker
+      - nginx
+      - nginx_exporter
     tags: init
 
 
@@ -26,10 +28,7 @@
     hosts: web_servers
     become: yes
     roles:
-      - agama #app-server
-    #- uwsgi #app-server
-      - nginx
-      - nginx_exporter
+      - agama
     tags: n
 
   - name: DNS Server
@@ -83,8 +82,8 @@
     roles:
         - influxdb
         - influxdb_backup
-        - pinger #n/w
-        # - influxdb_exporter deosnt works
+        - pinger
+        - influxdb_exporter
     tags: logging
 
   - name: Keepalived/HA
@@ -94,3 +93,4 @@
         - keepalived
         - haproxy
     tags: ha
+

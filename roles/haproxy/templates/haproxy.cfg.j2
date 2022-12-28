@@ -28,5 +28,5 @@ listen my_ha_frontend
     stats enable
     stats uri /stats
     bind :88
-    server docker1 server1:5000 check
-    server docker2 server2:5000 check
+    server docker1 server1.infra.rd:5000 check
+    server docker2 server2.infra.rd:5000 check

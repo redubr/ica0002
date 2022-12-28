@@ -1,6 +1,8 @@
 - name: Ensure mysql server is installed
   apt:
-    name: mysql-server
+    name:
+      - mysql-server
+      - python3-pymysql
     state: latest
 
 - name: Configure
@@ -15,18 +17,10 @@
     state: started
     enabled: yes
 
-- name: Ensure pymysql is installed
-  apt:
-    name: python3-pymysql
-    state: latest
-
 - name: Add MySQL Database
   community.mysql.mysql_db:
     name: "{{mysql_database}}"
     login_unix_socket: /var/run/mysqld/mysqld.sock
-  notify:
-    - reset source
-    - reset replica
 
 - name: Add MySQL user
   mysql_user:
@@ -58,20 +52,9 @@
 - name: replica server read_only
   community.mysql.mysql_variables:
     variable: read_only
-    value: "{{ 'OFF' if inventory_hostname == mysql_host else 'ON' }}"
+    value: "{{ 'OFF' if inventory_hostname == mysql_hostname else 'ON' }}"
     mode: persist
     login_unix_socket: /var/run/mysqld/mysqld.sock
-  notify:
-    - reset source
-    - reset replica
-
-- name: fix annoying bug
-  community.mysql.mysql_variables:
-    variable: read_only
-    value: 'OFF'
-    mode: persist
-    login_unix_socket: /var/run/mysqld/mysqld.sock
-  when: inventory_hostname == mysql_hostname
   notify:
     - reset source
     - reset replica

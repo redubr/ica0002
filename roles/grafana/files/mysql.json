@@ -41,14 +41,14 @@
             {
               "options": {
                 "0": {
-                  "color": "red",
+                  "color": "blue",
                   "index": 1,
-                  "text": "DOWN"
+                  "text": "READ_WRITE"
                 },
                 "1": {
                   "color": "green",
                   "index": 0,
-                  "text": "UP"
+                  "text": "READ-ONLY"
                 }
               },
               "type": "value"
@@ -72,7 +72,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "{__name__=\"mysql_up\", instance=\"server1.infra.rd:9104\", job=\"mysql\"}"
+              "options": "{__name__=\"mysql_global_variables_read_only\", instance=\"server1.infra.rd:9104\", job=\"mysql\"}"
             },
             "properties": [
               {
@@ -84,7 +84,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "{__name__=\"mysql_up\", instance=\"server2.infra.rd:9104\", job=\"mysql\"}"
+              "options": "{__name__=\"mysql_global_variables_read_only\", instance=\"server2.infra.rd:9104\", job=\"mysql\"}"
             },
             "properties": [
               {
@@ -101,12 +101,12 @@
         "x": 0,
         "y": 0
       },
-      "id": 2,
+      "id": 12,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
-        "orientation": "auto",
+        "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -116,7 +116,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "9.3.2",
       "targets": [
         {
           "datasource": {
@@ -124,13 +124,13 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "mysql_up",
+          "expr": "mysql_global_variables_read_only",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "MySQL Status",
+      "title": "Read Only",
       "type": "stat"
     },
     {
@@ -206,7 +206,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "9.3.2",
       "targets": [
         {
           "datasource": {
@@ -233,16 +233,32 @@
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [],
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 1,
+                  "text": "DOWN"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "UP"
+                }
+              },
+              "type": "value"
+            }
+          ],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
+                "color": "green",
                 "value": null
               },
               {
-                "color": "blue",
+                "color": "red",
                 "value": 80
               }
             ]
@@ -252,24 +268,24 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "{__name__=\"mysql_global_variables_server_id\", instance=\"server1.infra.rd:9104\", job=\"mysql\"}"
+              "options": "{__name__=\"mysql_up\", instance=\"server1.infra.rd:9104\", job=\"mysql\"}"
             },
             "properties": [
               {
                 "id": "displayName",
-                "value": "Server 1 ID:"
+                "value": "Server 1:"
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "{__name__=\"mysql_global_variables_server_id\", instance=\"server2.infra.rd:9104\", job=\"mysql\"}"
+              "options": "{__name__=\"mysql_up\", instance=\"server2.infra.rd:9104\", job=\"mysql\"}"
             },
             "properties": [
               {
                 "id": "displayName",
-                "value": "Server 2 ID:"
+                "value": "Server 2:"
               }
             ]
           }
@@ -281,7 +297,7 @@
         "x": 0,
         "y": 8
       },
-      "id": 6,
+      "id": 2,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -296,7 +312,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "9.3.2",
       "targets": [
         {
           "datasource": {
@@ -304,13 +320,13 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "mysql_global_variables_server_id",
+          "expr": "mysql_up",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Server ID's",
+      "title": "MySQL Status",
       "type": "stat"
     },
     {
@@ -427,68 +443,49 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "thresholds"
           },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 5,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [
-            {
-              "options": {
-                "1": {
-                  "color": "green",
-                  "index": 0
-                },
-                "2": {
-                  "color": "red",
-                  "index": 1
-                }
-              },
-              "type": "value"
-            }
-          ],
+          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "blue",
                 "value": null
               },
               {
-                "color": "red",
+                "color": "blue",
                 "value": 80
               }
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "{__name__=\"mysql_global_variables_server_id\", instance=\"server1.infra.rd:9104\", job=\"mysql\"}"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Server 1 ID:"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "{__name__=\"mysql_global_variables_server_id\", instance=\"server2.infra.rd:9104\", job=\"mysql\"}"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Server 2 ID:"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -496,19 +493,22 @@
         "x": 0,
         "y": 16
       },
-      "id": 10,
+      "id": 6,
       "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
         },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
+        "textMode": "auto"
       },
+      "pluginVersion": "9.3.2",
       "targets": [
         {
           "datasource": {
@@ -516,14 +516,14 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "mysql_slave_status_slave_io_running",
+          "expr": "mysql_global_variables_server_id",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Slave IO Running",
-      "type": "timeseries"
+      "title": "Server ID's",
+      "type": "stat"
     },
     {
       "datasource": {
@@ -630,6 +630,112 @@
       ],
       "title": "Slave SQL Running",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 5,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [
+            {
+              "options": {
+                "1": {
+                  "color": "green",
+                  "index": 0
+                },
+                "2": {
+                  "color": "red",
+                  "index": 1
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 24
+      },
+      "id": 10,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "mysql_slave_status_slave_io_running",
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Slave IO Running",
+      "type": "timeseries"
     }
   ],
   "schemaVersion": 37,
@@ -645,6 +751,7 @@
   "timepicker": {},
   "timezone": "",
   "title": "MySQL",
-  "version": 0,
+  "uid": "EsTyX5tVk",
+  "version": 1,
   "weekStart": ""
 }

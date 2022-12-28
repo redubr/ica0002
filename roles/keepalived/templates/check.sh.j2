@@ -1,0 +1,5 @@
+#!/bin/sh
+# restart keepalive if haproxy died
+pid=`/bin/pidof haproxy`
+test -z "$pid" && { service keepalived restart &>/dev/null; exit 1; }
+exit 0

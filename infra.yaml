@@ -11,7 +11,6 @@
       - backup
       - docker
       - nginx
-      - nginx_exporter
     tags: init
 
 
@@ -83,7 +82,6 @@
         - influxdb
         - influxdb_backup
         - pinger
-        - influxdb_exporter
     tags: logging
 
   - name: Keepalived/HA
@@ -94,3 +92,16 @@
         - haproxy
     tags: ha
 
+  - name: Exporters all
+    hosts: all
+    become: yes
+    roles:
+      - nginx_exporter
+    tags: exp
+
+  - name: Exporter influxdb
+    hosts: logging
+    become: yes
+    roles:
+      - influxdb_exporter
+    tags: logexp

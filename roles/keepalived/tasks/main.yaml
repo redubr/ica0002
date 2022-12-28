@@ -1,8 +1,15 @@
 ---
-- name: ensure keepalived installed
+- name: ensure keepalived and netstat installed
   apt:
-    name: keepalived
+    name:
+      - keepalived
+      - net-tools
     state: latest
+
+- name: keepalived script user
+  user:
+    name: keepalived_script
+    home: /home/keepalived_script
 
 - name: Configure keepalived
   template:

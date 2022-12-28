@@ -3,6 +3,7 @@
   service:
     name: systemd-resolved
     state: stopped
+    enabled: false
 
 - name: CP Dns config
   template:

@@ -1,7 +1,7 @@
 ---
 - name: Download influxstats exporter
   get_url:
-    url: https://github.com/carlpett/influxdb_stats_exporter/releases/download/v0.1.1/influx_stats_exporter_darwin_amd64
+    url: https://github.com/carlpett/influxdb_stats_exporter/releases/download/v0.1.1/influx_stats_exporter_linux_amd64
     dest: /usr/local/bin/influxdb-stats-exporter
     mode: '0777' # Failed at step EXEC spawning /usr/local/bin/influxexporter: Permission denied
     owner: prometheus

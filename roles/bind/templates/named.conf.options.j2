@@ -6,10 +6,8 @@ acl networks {
 options {
     directory "/var/cache/bind";
 
-    allow-query { networks; };
+    allow-query { 127.0.0.1; networks; };
     dnssec-validation no;
-    recursion yes;
-    allow-recursion { networks; };
 
     forwarders {
         {% for fow in dns_forwarders %}
@@ -17,8 +15,8 @@ options {
         {% endfor %}
     };
 
-    listen-on port 53 { 127.0.0.1; {{dns_listen}}; };
-
+    #listen-on port 53 { 127.0.0.1; {{dns_listen}}; };
+    listen-on-v6 { none; };
 };
 
 statistics-channels {

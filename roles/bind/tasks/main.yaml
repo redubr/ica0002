@@ -9,7 +9,9 @@
   template:
     src: ../templates/named.conf.options.j2
     dest: /etc/bind/named.conf.options
-  notify: restart bind9
+  notify:
+    - restart bind9
+    - reload rndc
   no_log: true
   register: conf
 
@@ -19,7 +21,9 @@
     src: db.dok.j2
     dest: /var/cache/bind/db.infra.rd # https://serverfault.com/questions/85161/should-i-use-etc-bind-zones-or-var-cache-bind
     force: no # only when missing
-  notify: reload rndc
+  notify:
+    - reload rndc
+    - restart bind9
   when: inventory_hostname in groups['dns_master']
   register: conf
 
@@ -28,7 +32,9 @@
     src: db.dok.reverse.j2
     dest: /var/cache/bind/db.infra.rd.reverse # https://serverfault.com/questions/85161/should-i-use-etc-bind-zones-or-var-cache-bind
     force: no # only when missing
-  notify: reload rndc
+  notify:
+    - reload rndc
+    - restart bind9
   when: inventory_hostname in groups['dns_master']
   register: conf
 
@@ -36,7 +42,9 @@
   template:
     src: named.conf.local.j2
     dest: /etc/bind/named.conf.local
-  notify: restart bind9
+  notify:
+    - restart bind9
+    - reload rndc
   register: conf
 
 - name: start bind9
@@ -50,8 +58,7 @@
 
 - name: wait
   pause:
-    seconds: 30
-  when: conf.changed
+    seconds: 15
 
 - name: Add A records
   nsupdate:
@@ -65,6 +72,7 @@
     value: "{{item.value}}"
   loop: "{{dns_a_record | dict2items}}"
   when: inventory_hostname in groups['dns_master'][0]
+  run_once: True
 
 - name: Add CNAME records
   nsupdate:
@@ -78,5 +86,6 @@
     value: "{{item.value}}"
   loop: "{{dns_cname_record | dict2items}}"
   when: inventory_hostname in groups['dns_master'][0]
+  run_once: True
 
 

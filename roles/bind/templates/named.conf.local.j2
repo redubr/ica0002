@@ -5,7 +5,7 @@ zone "{{domain_name}}" {
   allow-update { key update.key; };
   {% else %}
   type slave;
-  masters { {{hostvars[groups['dns_master'][0]]['ansible_default_ipv4']['address']}}; };
+  masters { {{hostvars[groups['dns_master'][0]]['ansible_default_ipv4']['address']}} key transfer.key; };
   {% endif %}
 
   file "db.{{domain_name}}";
@@ -22,11 +22,11 @@ server  {{ hostvars[vm]['ansible_default_ipv4']['address'] }} {
 zone "43.168.192.in-addr.arpa" {
 {% if inventory_hostname in groups['dns_master'] %}
   type master;
-  allow-transfer { key transfer.key; };
+  allow-transfer { {{localhost}}; key transfer.key; };
   allow-update { key update.key; };
   {% else %}
   type slave;
-  masters { {{hostvars[groups['dns_master'][0]]['ansible_default_ipv4']['address']}}; };
+  masters { {{hostvars[groups['dns_master'][0]]['ansible_default_ipv4']['address']}} key transfer.key; };
   {% endif %}
 
   file "db.{{domain_name}}.reverse";

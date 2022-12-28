@@ -1,7 +1,11 @@
-vrrp_script check_haproxy {
-    script "netstat -ntl | grep -q ':88 '"
-    weight 20
-    interval 1
+global_defs {
+      enable_script_security
+}
+
+vrrp_track_process check_haproxy {
+    process haproxy
+    quorum 1
+    delay 2
 }
 
 vrrp_instance AGAMA {
@@ -14,7 +18,11 @@ vrrp_instance AGAMA {
     {% endif %}
     advert_int 1
     virtual_ipaddress {
+        {% if (hostvars[groups['ubuntu'][0]]['ansible_default_ipv4']['address'] | split('.'))[2] == "43" %}
+        192.168.101.{{hostvars['server1']['ansible_default_ipv4']['address'].split('.')[3]}}/24
+        {% else %}
         192.168.100.{{hostvars['server1']['ansible_default_ipv4']['address'].split('.')[3]}}/24
+        {% endif %}
     }
     unicast_peer {
         {% for vm in groups['haproxy']  %}
@@ -23,7 +31,7 @@ vrrp_instance AGAMA {
         {% endif %}
         {% endfor %}
     }
-    track_script {
+    track_process {
         check_haproxy
     }
 }

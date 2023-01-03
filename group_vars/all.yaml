@@ -106,7 +106,7 @@ dns_cname_record:
   web2: "{{ groups['web_servers'][1] }}"
 
 #Ports docker
-agama_docker_port: 5000
+agama_nginx: 5000 #Select container which nginx points to
 docker_grafana_port: 3000
 
 #SA Ports
@@ -129,3 +129,9 @@ prom:
     port: 9165
   influxdb:
     port: 9424
+
+
+#Agama container creation + haproxy ----- name - port
+container:
+  agama: 5000
+  agama1: 5001

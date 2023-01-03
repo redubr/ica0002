@@ -3,15 +3,15 @@
     name: nginx
     state: latest
 
+- name: Copy template to server
+  template:
+    src: default.j2
+    dest: /etc/nginx/sites-enabled/default
+  notify: Restart nginx
+
 - name: start nginx
   service:
     name: nginx
     state: started
     enabled: yes
   become: yes
-
-- name: Copy template to server
-  template:
-    src: default.j2
-    dest: /etc/nginx/sites-enabled/default
-  notify: Restart nginx

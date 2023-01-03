@@ -15,12 +15,12 @@ options {
         {% endfor %}
     };
 
-    #listen-on port 53 { 127.0.0.1; {{dns_listen}}; };
+    #listen-on port 53 { 127.0.0.1; };
     listen-on-v6 { none; };
 };
 
 statistics-channels {
-  inet 127.0.0.1 port 8053 allow { 127.0.0.1; };
+  inet 127.0.0.1 port {{bind_stats}} allow { 127.0.0.1; };
 };
 
 key "transfer.key" {

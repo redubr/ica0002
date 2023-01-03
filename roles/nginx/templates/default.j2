@@ -4,20 +4,20 @@ server {
 
     {% if inventory_hostname in groups['web_servers'] %}
 	location / {
-		proxy_pass http://localhost:5000;
+		proxy_pass http://localhost:{{agama_docker_port}};
 	}
 	{% endif %}
 
 	{% if inventory_hostname in groups['prometh'] %}
 	location /prometheus {
-    		proxy_pass http://localhost:9090;
+    		proxy_pass http://localhost:{{prom_port}};
     }
 	{% endif %}
 
 	{% if inventory_hostname in groups['grafana'] %}
     	location /grafana {
     	        proxy_set_header Host $http_host;
-        		proxy_pass http://localhost:3000;
+        		proxy_pass http://localhost:{{docker_grafana_port}};
         }
     {% endif %}
 

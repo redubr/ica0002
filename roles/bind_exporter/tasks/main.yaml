@@ -4,6 +4,13 @@
     name: prometheus-bind-exporter
     state: latest
 
+- name: Copy args
+  template:
+    src: bind-exporter.j2
+    dest: /etc/default/prometheus-bind-exporter
+  notify:
+    - restart
+
 - name: Enable bind exporter
   service:
     name: prometheus-bind-exporter

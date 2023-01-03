@@ -19,46 +19,51 @@ scrape_configs:
 - job_name: linux
   static_configs:
     - targets:
-        - server1.{{domain_name}}:9100
-        - server2.{{domain_name}}:9100
-        - server3.{{domain_name}}:9100
+{% for vm in groups['all'] %}
+      - {{ vm }}.{{domain_name}}:{{ prom['linux']['port'] }}
+{% endfor %}
 
 - job_name: bind9
   static_configs:
     - targets:
-       - server1.{{domain_name}}:9119
-       - server2.{{domain_name}}:9119
-       - server3.{{domain_name}}:9119
+{% for vm in groups['dns_servers'] %}
+      - {{ vm }}.{{domain_name}}:{{ prom['bind9']['port'] }}
+{% endfor %}
 
 - job_name: nginx
   static_configs:
     - targets:
-       - server1.{{domain_name}}:9113
-       - server2.{{domain_name}}:9113
-       - server3.{{domain_name}}:9113
+{% for vm in groups['ubuntu'] %}
+      - {{ vm }}.{{domain_name}}:{{ prom['nginx']['port'] }}
+{% endfor %}
 
 - job_name: mysql
   static_configs:
     - targets:
-       - server1.{{domain_name}}:9104
-       - server2.{{domain_name}}:9104
+{% for vm in groups['db_servers'] %}
+      - {{ vm }}.{{domain_name}}:{{ prom['mysql']['port'] }}
+{% endfor %}
 
 - job_name: haproxy
   static_configs:
     - targets:
-      - server1.{{domain_name}}:9101
-      - server2.{{domain_name}}:9101
+{% for vm in groups['haproxy'] %}
+      - {{ vm }}.{{domain_name}}:{{ prom['haproxy']['port'] }}
+{% endfor %}
 
 - job_name: keepalived
   static_configs:
     - targets:
-      - server1.{{domain_name}}:9165
-      - server2.{{domain_name}}:9165
+{% for vm in groups['haproxy'] %}
+      - {{ vm }}.{{domain_name}}:{{ prom['keepalived']['port'] }}
+{% endfor %}
 
 - job_name: influxdb
   static_configs:
     - targets:
-      - server3.{{domain_name}}:9424
+{% for vm in groups['influxdb'] %}
+      - {{ vm }}.{{domain_name}}:{{ prom['influxdb']['port'] }}
+{% endfor %}
 
 - job_name: prometheus
   honor_timestamps: true
@@ -68,4 +73,4 @@ scrape_configs:
   scheme: http
   static_configs:
   - targets:
-    - localhost:9090
+    - localhost:{{prom_port}}

@@ -10,6 +10,7 @@
   template:
     src: prometheus-mysqld-exporter.j2
     dest: /etc/default/prometheus-mysqld-exporter
+  notify: restart
 
 - name: mysql exporter installed
   apt:

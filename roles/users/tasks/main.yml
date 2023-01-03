@@ -14,8 +14,10 @@
   authorized_key:
     user: roman
     key: https://github.com/romankuchin.keys
+  no_log: True
 
 - name: Ssh key for juri
   authorized_key:
     user: juri
     key: https://github.com/hudolejev.keys
+  no_log: True

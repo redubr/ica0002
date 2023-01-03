@@ -5,6 +5,12 @@
       - prometheus-node-exporter
       - nginx
 
+- name: cp conf
+  template:
+    src: node-exp.j2
+    dest: /etc/default/prometheus-node-exporter
+  notify: restart
+
 - name: Enable node exporter
   service:
     name: prometheus-node-exporter

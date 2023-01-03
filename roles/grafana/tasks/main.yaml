@@ -5,32 +5,17 @@
     uid: 472
     state: present
 
-- name: folder with correct permissions
-  file:
-    name: /opt/docker/grafana
-    state: directory
-    owner: grafana
-    group: grafana
-    recurse: yes #gives permissions for subfolders also
-    force: yes
-
 - name: folder with correct permissions datasources
   file:
     name: /opt/docker/grafana/provisioning/datasources
     state: directory
-    owner: grafana
-    group: grafana
     recurse: yes #gives permissions for subfolders also
-    force: yes
 
 - name: folder with correct permissions dashboards
   file:
     name: /opt/docker/grafana/provisioning/dashboards
     state: directory
-    owner: grafana
-    group: grafana
     recurse: yes #gives permissions for subfolders also
-    force: yes
 
 
 
@@ -43,6 +28,7 @@
   notify:
     - stop
     - start
+  no_log: True
 
 - name: Datasources
   template:
@@ -85,5 +71,5 @@
     volumes:
       - /opt/docker/grafana:/etc/grafana #cp local:docker
     ports:
-      - "3000:3000"
+      - "{{docker_grafana_port}}:3000"
     restart_policy: always

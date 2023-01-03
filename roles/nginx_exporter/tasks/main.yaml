@@ -4,6 +4,12 @@
     name: prometheus-nginx-exporter
     state: latest
 
+- name: cp template
+  template:
+    src: nginx-exp.j2
+    dest: /etc/default/prometheus-nginx-exporter
+  notify: restart
+
 - name: start and enable nginx exporter
   service:
     name: prometheus-nginx-exporter

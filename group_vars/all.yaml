@@ -1,7 +1,8 @@
 ##
-mysql_host: 192.168.42.93 #todo dynamic
-mysql_hostname: server1 #todo adsasdasdasd
+mysql_host: "{{groups['db_master'][0]}}" #default server2 -- note
+mysql_hostname: "{{mysql_host}}" #server2 by default
 ##
+mysql_bind_a: 0.0.0.0
 mysql_database: agama
 mysql_user: agama
 mysql_user_prometheus: exporter
@@ -57,6 +58,14 @@ dns_update_key: !vault |
   32363463376661323062353631366662613436653364323236353533643363646436336363313430
   6133653331303966633734313962316539343164386332366636
 
+grafana_admin_password: !vault |
+  $ANSIBLE_VAULT;1.1;AES256
+  33663465346233376431396135363236613932636637376634633335373164643535663633333730
+  3939386234633762656362343236386630363638313762330a323162643931656233323237326530
+  34646138366363373761653965306630616533643462316461393032613935313762353163343832
+  6364303962616264380a623631376261333439623835393633353661373731343539313561313134
+  3635
+
 ## DNS
 dns_forwarders:
   - 1.1.1.1
@@ -66,10 +75,9 @@ lan: 192.168.42.0/23
 localhost: 127.0.0.0/8
 startup_name: infra
 domain_name: "{{startup_name}}.rd"
-dns_listen: 192.168.42.25 # Todo dynamic s3
 
 ## serv2
-monitoring_host: 193.40.156.67:10280 #public url serv3 # todo where used?
+monitoring_host: "{{ ansible_host }}:{{ ansible_port//100}}80"
 
 ## Backup server
 backup_server_ip: 192.168.42.132
@@ -97,3 +105,27 @@ dns_cname_record:
   web1: "{{ groups['web_servers'][0] }}"
   web2: "{{ groups['web_servers'][1] }}"
 
+#Ports docker
+agama_docker_port: 5000
+docker_grafana_port: 3000
+
+#SA Ports
+prom_port: 9090
+bind_stats: 8053
+
+#Prometheus and ports
+prom:
+  linux:
+    port: 9100
+  bind9:
+    port: 9119
+  nginx:
+    port: 9113
+  mysql:
+    port: 9104
+  haproxy:
+    port: 9101
+  keepalived:
+    port: 9165
+  influxdb:
+    port: 9424

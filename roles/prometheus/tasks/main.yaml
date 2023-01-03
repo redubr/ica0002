@@ -21,5 +21,4 @@
     name: prometheus
     state: started
     enabled: yes
-    arguments:
   become: yes
